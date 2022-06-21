@@ -37,5 +37,8 @@
     "@jupiterone/integration-sdk-core": "^8.14.0",
     "@jupiterone/integration-sdk-dev-tools": "^8.14.0",
     "@jupiterone/integration-sdk-testing": "^8.14.0"
+  },
+  "dependencies": {
+    "gaxios": "^5.0.0"
   }
 }

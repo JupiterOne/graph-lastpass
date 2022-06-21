@@ -4,6 +4,7 @@ import {
   IntegrationInstanceConfigFieldMap,
   IntegrationInstanceConfig,
 } from '@jupiterone/integration-sdk-core';
+import { toMatchGraphObjectSchema } from '@jupiterone/integration-sdk-testing';
 import { createAPIClient } from './client';
 
 /**
@@ -21,10 +22,10 @@ import { createAPIClient } from './client';
  * `instance.config` in a UI.
  */
 export const instanceConfigFields: IntegrationInstanceConfigFieldMap = {
-  clientId: {
+  companyId: {
     type: 'string',
   },
-  clientSecret: {
+  provisioningHash: {
     type: 'string',
     mask: true,
   },
@@ -35,15 +36,8 @@ export const instanceConfigFields: IntegrationInstanceConfigFieldMap = {
  * same properties defined by `instanceConfigFields`.
  */
 export interface IntegrationConfig extends IntegrationInstanceConfig {
-  /**
-   * The provider API client ID used to authenticate requests.
-   */
-  clientId: string;
-
-  /**
-   * The provider API client secret used to authenticate requests.
-   */
-  clientSecret: string;
+  companyId: string;
+  provisioningHash: string;
 }
 
 export async function validateInvocation(
@@ -51,9 +45,9 @@ export async function validateInvocation(
 ) {
   const { config } = context.instance;
 
-  if (!config.clientId || !config.clientSecret) {
+  if (!config.companyId || !config.provisioningHash) {
     throw new IntegrationValidationError(
-      'Config requires all of {clientId, clientSecret}',
+      'Config requires a companyId and provisioningHash',
     );
   }
 
