@@ -22,14 +22,13 @@ export class APIClient {
   constructor(readonly config: IntegrationConfig) {}
 
   public async verifyAuthentication(): Promise<void> {
-    const body = this.createPostBody('getserdata', '');
+    const body = this.createPostBody('getuserdata', { pagesize: 1 });
     const requestOpts: GaxiosOptions = {
       url: this.BASE_URL,
       method: 'POST',
       data: body,
     };
 
-    // TODO: limit response size with pagesize parameters
     const response = await request<UserResponse>(requestOpts);
     this.usersResponseIsOk(response);
   }
@@ -67,20 +66,30 @@ export class APIClient {
     };
   }
 
+  /**
+   * iterateUsers iterates
+   */
   public async iterateUsers(iteratee: ResourceIteratee<User>): Promise<void> {
-    let pagesize = 1000;
+    const pagesize = 200;
     let pageindex = 0;
     let itemsSeen = pagesize * pageindex;
     let total = 0;
     do {
-      const body = this.createPostBody('getuserdata', 'all');
+      const body = this.createPostBody('getuserdata', { pagesize: pagesize });
       const requestOpts = {
         url: this.BASE_URL,
         body,
       };
       const response = await request<UserResponse>(requestOpts);
+      this.usersResponseIsOk(response);
+
+      total = response.data.total;
       for (const key in response.data.Users) {
-        await iteratee(response.data.Users[key]);
+        const user: User = {
+          ...response.data.Users[key],
+          key: key,
+        };
+        await iteratee(user);
       }
 
       pageindex++;

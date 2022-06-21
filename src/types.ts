@@ -21,6 +21,7 @@ export interface User {
   last_pw_change: string;
   last_login: string;
   neverloggedin: boolean;
+  duousername: string | null;
   disabled: boolean;
   admin: boolean;
   linked: string;
@@ -31,4 +32,5 @@ export interface User {
   attachments: number;
   password_reset_required: boolean;
   groups?: string[];
+  key?: string;
 }
