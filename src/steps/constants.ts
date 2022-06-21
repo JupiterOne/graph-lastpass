@@ -8,7 +8,15 @@ export const Steps = {
   USERS: 'fetch-users',
 };
 
-export const Entities: Record<'USER', StepEntityMetadata> = {
+export const Entities: Record<'ACCOUNT' | 'USER', StepEntityMetadata> = {
+  ACCOUNT: {
+    resourceName: 'Account',
+    _type: 'lastpass_account',
+    _class: ['Account'],
+    schema: {
+      properties: {},
+    },
+  },
   USER: {
     resourceName: 'User',
     _type: 'lastpass_user',

@@ -1,5 +1,5 @@
 import { IntegrationConfig } from './config';
-import { GaxiosOptions, GaxiosResponse, request } from 'gaxios';
+import { Gaxios, GaxiosOptions, GaxiosResponse, request } from 'gaxios';
 import { User, UserResponse } from './types';
 import {
   IntegrationProviderAPIError,
@@ -66,6 +66,23 @@ export class APIClient {
     };
   }
 
+  private createRequestOptions({
+    url,
+    cmd,
+    data,
+  }: {
+    url: string;
+    cmd: string;
+    data: any;
+  }): GaxiosOptions {
+    const body = this.createPostBody(cmd, data);
+    return {
+      url,
+      data: body,
+      method: 'POST',
+    };
+  }
+
   /**
    * iterateUsers iterates
    */
@@ -75,11 +92,11 @@ export class APIClient {
     let itemsSeen = pagesize * pageindex;
     let total = 0;
     do {
-      const body = this.createPostBody('getuserdata', { pagesize: pagesize });
-      const requestOpts = {
+      const requestOpts = this.createRequestOptions({
         url: this.BASE_URL,
-        body,
-      };
+        cmd: 'getuserdata',
+        data: { pagesize: pagesize, pageindex: pageindex },
+      });
       const response = await request<UserResponse>(requestOpts);
       this.usersResponseIsOk(response);
 

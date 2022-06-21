@@ -13,30 +13,34 @@ export function createUserEntity(user: User): Entity {
 
   return createIntegrationEntity({
     entityData: {
-      source: user,
+      source: {
+        ...user,
+        notes: undefined,
+      },
       assign: {
-        _key: user.key!,
+        _key: 'lastpass_user:' + user.key!,
         _class: Entities.USER._class,
         _type: 'lastpass_user',
         name: user.fullname,
+        displayName: user.username,
         username: user.username,
         createdOn: parseTimePropertyValue(user.created),
-        passwordChangedOn: user.last_pw_change,
+        passwordChangedOn: parseTimePropertyValue(user.last_pw_change),
         email: user.username,
         active: !user.disabled,
         neverLoggedIn: user.neverloggedin,
         admin: user.admin,
         shortLoginId,
-        emailDomain,
+        emailDomain: [emailDomain],
 
         duoUsername: user.duousername,
         masterPasswordStrength: user.mpstrength,
         passwordResetRequired: user.password_reset_required,
-        sites: user.sites,
-        notes: user.notes,
-        formfills: user.formfills,
-        applications: user.applications,
-        attachments: user.attachments,
+        sitesCount: user.sites,
+        notesCount: user.notes,
+        formfillsCount: user.formfills,
+        applicationCount: user.applications,
+        attachmentsCount: user.attachments,
       },
     },
   });
