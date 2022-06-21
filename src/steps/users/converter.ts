@@ -10,6 +10,9 @@ export function createUserEntity(user: User): Entity {
   const splitEmail = user.username.split('@');
   const shortLoginId = splitEmail[0];
   const emailDomain = splitEmail[1];
+  const searchParamForWebLink = Buffer.from(
+    JSON.stringify({ search: user.username }),
+  ).toString('base64');
 
   return createIntegrationEntity({
     entityData: {
@@ -32,10 +35,13 @@ export function createUserEntity(user: User): Entity {
         admin: user.admin,
         shortLoginId,
         emailDomain: [emailDomain],
+        webLink: `https://admin.lastpass.com/users/view?users=${searchParamForWebLink}`,
 
         duoUsername: user.duousername,
         masterPasswordStrength: user.mpstrength,
         passwordResetRequired: user.password_reset_required,
+        securityScore: user.totalscore,
+        linkedAccount: user.linked,
         sitesCount: user.sites,
         notesCount: user.notes,
         formfillsCount: user.formfills,

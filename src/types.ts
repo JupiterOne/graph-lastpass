@@ -23,8 +23,9 @@ export interface User {
   neverloggedin: boolean;
   duousername: string | null;
   disabled: boolean;
+  totalscore: string | null;
   admin: boolean;
-  linked: string;
+  linked?: string;
   sites: number;
   notes: number;
   formfills: number;

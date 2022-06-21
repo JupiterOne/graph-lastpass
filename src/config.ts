@@ -4,7 +4,6 @@ import {
   IntegrationInstanceConfigFieldMap,
   IntegrationInstanceConfig,
 } from '@jupiterone/integration-sdk-core';
-import { toMatchGraphObjectSchema } from '@jupiterone/integration-sdk-testing';
 import { createAPIClient } from './client';
 
 /**
@@ -42,7 +41,7 @@ export interface IntegrationConfig extends IntegrationInstanceConfig {
 
 export async function validateInvocation(
   context: IntegrationExecutionContext<IntegrationConfig>,
-) {
+): Promise<void> {
   const { config } = context.instance;
 
   if (!config.companyId || !config.provisioningHash) {

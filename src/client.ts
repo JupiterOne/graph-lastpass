@@ -1,5 +1,5 @@
 import { IntegrationConfig } from './config';
-import { Gaxios, GaxiosOptions, GaxiosResponse, request } from 'gaxios';
+import { GaxiosOptions, GaxiosResponse, request } from 'gaxios';
 import { User, UserResponse } from './types';
 import {
   IntegrationProviderAPIError,

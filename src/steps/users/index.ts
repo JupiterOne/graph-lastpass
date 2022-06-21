@@ -21,7 +21,6 @@ export const userSteps: IntegrationStep<IntegrationConfig>[] = [
 
 export async function fetchUsers({
   instance,
-  logger,
   jobState,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
   const client = createAPIClient(instance.config);

@@ -1,8 +1,4 @@
-import {
-  RelationshipClass,
-  StepEntityMetadata,
-  StepRelationshipMetadata,
-} from '@jupiterone/integration-sdk-core';
+import { StepEntityMetadata } from '@jupiterone/integration-sdk-core';
 
 export const Steps = {
   USERS: 'fetch-users',
