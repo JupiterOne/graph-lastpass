@@ -4,7 +4,7 @@ import {
 } from '@jupiterone/integration-sdk-core';
 import { IntegrationConfig } from '../../config';
 import { createAccountEntity } from './converter';
-import { Entities, Relationships, Steps } from '../constants';
+import { Entities, Steps } from '../constants';
 
 export const ACCOUNT_ENTITY_KEY = 'entity:account';
 
@@ -23,7 +23,7 @@ export const accountStep: IntegrationStep<IntegrationConfig> = {
   id: Steps.ACCOUNT,
   name: 'Build Account',
   entities: [Entities.ACCOUNT],
-  relationships: [Relationships.ACCOUNT_HAS_USER],
+  relationships: [],
   dependsOn: [],
   executionHandler: buildAccount,
 };
