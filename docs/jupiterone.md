@@ -96,9 +96,18 @@ https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
 
 The following entities are created:
 
-| Resources | Entity `_type`  | Entity `_class` |
-| --------- | --------------- | --------------- |
-| User      | `lastpass_user` | `User`          |
+| Resources | Entity `_type`     | Entity `_class` |
+| --------- | ------------------ | --------------- |
+| Account   | `lastpass_account` | `Account`       |
+| User      | `lastpass_user`    | `User`          |
+
+### Relationships
+
+The following relationships are created:
+
+| Source Entity `_type` | Relationship `_class` | Target Entity `_type` |
+| --------------------- | --------------------- | --------------------- |
+| `lastpass_account`    | **HAS**               | `lastpass_user`       |
 
 <!--
 ********************************************************************************

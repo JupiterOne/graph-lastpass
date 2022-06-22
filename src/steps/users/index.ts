@@ -8,17 +8,6 @@ import { User } from '../../types';
 import { Entities, Steps } from '../constants';
 import { createUserEntity } from './converter';
 
-export const userSteps: IntegrationStep<IntegrationConfig>[] = [
-  {
-    id: Steps.USERS,
-    name: 'Fetch Users',
-    entities: [Entities.USER],
-    relationships: [],
-    dependsOn: [],
-    executionHandler: fetchUsers,
-  },
-];
-
 export async function fetchUsers({
   instance,
   jobState,
@@ -28,3 +17,14 @@ export async function fetchUsers({
     await jobState.addEntity(createUserEntity(user));
   });
 }
+
+export const userSteps: IntegrationStep<IntegrationConfig>[] = [
+  {
+    id: Steps.USERS,
+    name: 'Fetch Users',
+    entities: [Entities.USER],
+    relationships: [],
+    dependsOn: [Steps.ACCOUNT],
+    executionHandler: fetchUsers,
+  },
+];

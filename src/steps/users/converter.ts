@@ -44,7 +44,7 @@ export function createUserEntity(user: User): Entity {
         linkedAccount: user.linked,
         sitesCount: user.sites,
         notesCount: user.notes,
-        formfillsCount: user.formfills,
+        formFillsCount: user.formfills,
         applicationCount: user.applications,
         attachmentsCount: user.attachments,
       },
