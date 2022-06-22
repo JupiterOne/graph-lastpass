@@ -7,3 +7,8 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+
+- Initial changes added Account and User entities/relationship.
+- Built initial client with error handling.
