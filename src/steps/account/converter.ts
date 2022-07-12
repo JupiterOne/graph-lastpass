@@ -1,25 +1,27 @@
+import { Entities } from '../constants';
 import {
   createIntegrationEntity,
   Entity,
 } from '@jupiterone/integration-sdk-core';
 
-import { Entities } from '../constants';
+function createAccountId(companyId: string): string {
+  return `lastpass-account-${companyId}`;
+}
 
-export function createAccountEntity(): Entity {
+export function createAccountEntity(companyId: string): Entity {
+  const accountId = createAccountId(companyId);
+
   return createIntegrationEntity({
     entityData: {
       source: {
-        id: 'acme-unique-account-id',
-        name: 'Example Co. Acme Account',
+        id: accountId,
+        name: 'LassPass Company Account',
       },
       assign: {
-        _key: 'acme-unique-account-id',
+        _key: accountId,
         _type: Entities.ACCOUNT._type,
         _class: Entities.ACCOUNT._class,
-        mfaEnabled: true,
-        // This is a custom property that is not a part of the data model class
-        // hierarchy. See: https://github.com/JupiterOne/data-model/blob/master/src/schemas/Account.json
-        manager: 'Manager Name',
+        accessURL: 'https://admin.lastpass.com',
       },
     },
   });

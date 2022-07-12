@@ -1,9 +1,10 @@
-import http from 'http';
-
-import { IntegrationProviderAuthenticationError } from '@jupiterone/integration-sdk-core';
-
 import { IntegrationConfig } from './config';
-import { AcmeUser, AcmeGroup } from './types';
+import { GaxiosOptions, GaxiosResponse, request } from 'gaxios';
+import { User, UserResponse } from './types';
+import {
+  IntegrationProviderAPIError,
+  IntegrationProviderAuthorizationError,
+} from '@jupiterone/integration-sdk-core';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
 
@@ -16,109 +17,111 @@ export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
  * resources.
  */
 export class APIClient {
+  private BASE_URL = 'https://lastpass.com/enterpriseapi.php';
+
   constructor(readonly config: IntegrationConfig) {}
 
   public async verifyAuthentication(): Promise<void> {
-    // TODO make the most light-weight request possible to validate
-    // authentication works with the provided credentials, throw an err if
-    // authentication fails
-    const request = new Promise<void>((resolve, reject) => {
-      http.get(
-        {
-          hostname: 'localhost',
-          port: 443,
-          path: '/api/v1/some/endpoint?limit=1',
-          agent: false,
-          timeout: 10,
-        },
-        (res) => {
-          if (res.statusCode !== 200) {
-            reject(new Error('Provider authentication failed'));
-          } else {
-            resolve();
-          }
-        },
-      );
-    });
+    const body = this.createPostBody('getuserdata', { pagesize: 1 });
+    const requestOpts: GaxiosOptions = {
+      url: this.BASE_URL,
+      method: 'POST',
+      data: body,
+    };
 
-    try {
-      await request;
-    } catch (err) {
-      throw new IntegrationProviderAuthenticationError({
-        cause: err,
-        endpoint: 'https://localhost/api/v1/some/endpoint?limit=1',
-        status: err.status,
-        statusText: err.statusText,
+    const response = await request<UserResponse>(requestOpts);
+    APIClient.usersResponseIsOk(response);
+  }
+
+  private static usersResponseIsOk(response: GaxiosResponse) {
+    if (
+      response.data.total === undefined ||
+      response.data.count === undefined ||
+      response.data.Users === undefined
+    ) {
+      if (response.data.includes?.('Authorization Error')) {
+        throw new IntegrationProviderAuthorizationError({
+          endpoint: response.config.url as string,
+          status: 401,
+          statusText: 'Unauthorized',
+        });
+      } else {
+        // LastPass gives 200 OK for all responses, even when an error has
+        // ocurred.
+        throw new IntegrationProviderAPIError({
+          endpoint: response.config.url as string,
+          status: 500,
+          statusText: 'Internal Server Error',
+        });
+      }
+    }
+  }
+
+  private createPostBody(cmd: string, data: any) {
+    return {
+      cid: this.config.companyId,
+      provhash: this.config.provisioningHash,
+      cmd: cmd,
+      data: data,
+    };
+  }
+
+  private createRequestOptions({
+    url,
+    cmd,
+    data,
+  }: {
+    url: string;
+    cmd: string;
+    data: any;
+  }): GaxiosOptions {
+    const body = this.createPostBody(cmd, data);
+    return {
+      url,
+      data: body,
+      method: 'POST',
+    };
+  }
+
+  /**
+   * Iterates through all users.
+   * @param iteratee
+   */
+  public async iterateUsers(iteratee: ResourceIteratee<User>): Promise<void> {
+    const pagesize = 200;
+    let pageindex = 0;
+    let itemsSeen = pagesize * pageindex;
+    let total = 0;
+    do {
+      const requestOpts = this.createRequestOptions({
+        url: this.BASE_URL,
+        cmd: 'getuserdata',
+        data: { pagesize: pagesize, pageindex: pageindex },
       });
-    }
-  }
+      const response = await request<UserResponse>(requestOpts);
+      APIClient.usersResponseIsOk(response);
 
-  /**
-   * Iterates each user resource in the provider.
-   *
-   * @param iteratee receives each resource to produce entities/relationships
-   */
-  public async iterateUsers(
-    iteratee: ResourceIteratee<AcmeUser>,
-  ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
+      total = response.data.total;
+      for (const key in response.data.Users) {
+        const user: User = {
+          ...response.data.Users[key],
+          key: key,
+        };
+        await iteratee(user);
+      }
 
-    const users: AcmeUser[] = [
-      {
-        id: 'acme-user-1',
-        name: 'User One',
-      },
-      {
-        id: 'acme-user-2',
-        name: 'User Two',
-      },
-    ];
-
-    for (const user of users) {
-      await iteratee(user);
-    }
-  }
-
-  /**
-   * Iterates each group resource in the provider.
-   *
-   * @param iteratee receives each resource to produce entities/relationships
-   */
-  public async iterateGroups(
-    iteratee: ResourceIteratee<AcmeGroup>,
-  ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
-
-    const groups: AcmeGroup[] = [
-      {
-        id: 'acme-group-1',
-        name: 'Group One',
-        users: [
-          {
-            id: 'acme-user-1',
-          },
-        ],
-      },
-    ];
-
-    for (const group of groups) {
-      await iteratee(group);
-    }
+      pageindex++;
+      itemsSeen = pageindex * pagesize;
+    } while (itemsSeen < total);
   }
 }
 
+let client: APIClient;
+
 export function createAPIClient(config: IntegrationConfig): APIClient {
-  return new APIClient(config);
+  if (client) {
+    return client;
+  }
+  client = new APIClient(config);
+  return client;
 }
