@@ -17,10 +17,10 @@ export async function fetchUsers({
   jobState,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
   const client = createAPIClient(instance.config);
+  const account = (await jobState.getData(ACCOUNT_ENTITY_KEY)) as Entity;
+
   await client.iterateUsers(async (user: User) => {
     const userEntity = await jobState.addEntity(createUserEntity(user));
-
-    const account = (await jobState.getData(ACCOUNT_ENTITY_KEY)) as Entity;
 
     await jobState.addRelationship(
       createDirectRelationship({

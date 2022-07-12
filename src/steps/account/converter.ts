@@ -5,7 +5,7 @@ import {
 } from '@jupiterone/integration-sdk-core';
 
 function createAccountId(companyId: string): string {
-  return `orca-account-${companyId}`;
+  return `lastpass-account-${companyId}`;
 }
 
 export function createAccountEntity(companyId: string): Entity {
