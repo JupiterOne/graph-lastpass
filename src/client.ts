@@ -30,10 +30,10 @@ export class APIClient {
     };
 
     const response = await request<UserResponse>(requestOpts);
-    this.usersResponseIsOk(response);
+    APIClient.usersResponseIsOk(response);
   }
 
-  private usersResponseIsOk(response: GaxiosResponse) {
+  private static usersResponseIsOk(response: GaxiosResponse) {
     if (
       response.data.total === undefined ||
       response.data.count === undefined ||
@@ -84,7 +84,8 @@ export class APIClient {
   }
 
   /**
-   * iterateUsers iterates
+   * Iterates through all users.
+   * @param iteratee
    */
   public async iterateUsers(iteratee: ResourceIteratee<User>): Promise<void> {
     const pagesize = 200;
@@ -98,7 +99,7 @@ export class APIClient {
         data: { pagesize: pagesize, pageindex: pageindex },
       });
       const response = await request<UserResponse>(requestOpts);
-      this.usersResponseIsOk(response);
+      APIClient.usersResponseIsOk(response);
 
       total = response.data.total;
       for (const key in response.data.Users) {

@@ -17,9 +17,9 @@ export interface User {
   username: string;
   fullname: string;
   mpstrength: string;
-  created: string; // parseTimePropertyValue()
-  last_pw_change: string;
-  last_login: string;
+  created: Date;
+  last_pw_change: Date;
+  last_login: Date;
   neverloggedin: boolean;
   duousername: string | null;
   disabled: boolean;

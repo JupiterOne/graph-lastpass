@@ -29,6 +29,7 @@ export function createUserEntity(user: User): Entity {
         username: user.username,
         createdOn: parseTimePropertyValue(user.created),
         passwordChangedOn: parseTimePropertyValue(user.last_pw_change),
+        lastLogin: parseTimePropertyValue(user.last_login),
         email: user.username,
         active: !user.disabled,
         neverLoggedIn: user.neverloggedin,
