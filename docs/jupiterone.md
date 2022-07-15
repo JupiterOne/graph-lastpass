@@ -41,7 +41,6 @@ If you need help with this integration, please contact
 2. Generate a Provisioning Hash. Go to Advanced > Enterprise API. Once on the
    dashboard, create a provisioning hash. Note: This value grants access to your
    data, keep it safe!
-3.
 
 ### In JupiterOne
 
