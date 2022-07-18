@@ -2,9 +2,6 @@
 
 ## {{provider}} + JupiterOne Integration Benefits
 
-TODO: Iterate the benefits of ingesting data from the provider into JupiterOne.
-Consider the following examples:
-
 - Visualize {{provider}} users in the JupiterOne graph.
 - Map {{provider}} users to employees in your JupiterOne account.
 - Monitor changes to {{provider}} users using JupiterOne alerts.
@@ -43,9 +40,6 @@ If you need help with this integration, please contact
    data, keep it safe!
 
 ### In JupiterOne
-
-TODO: List specific actions that must be taken in JupiterOne. Many of the
-following steps will be reusable; take care to be sure they remain accurate.
 
 1. From the top navigation of the J1 Search homepage, select **Integrations**.
 2. Scroll to the **{{provider}}** integration tile and click it.
