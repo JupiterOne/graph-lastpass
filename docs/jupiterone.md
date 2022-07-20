@@ -1,16 +1,16 @@
-# {{provider}}
+# LastPass
 
-## {{provider}} + JupiterOne Integration Benefits
+## LastPass + JupiterOne Integration Benefits
 
-- Visualize {{provider}} users in the JupiterOne graph.
-- Map {{provider}} users to employees in your JupiterOne account.
-- Monitor changes to {{provider}} users using JupiterOne alerts.
+- Visualize LastPass users in the JupiterOne graph.
+- Map LastPass users to employees in your JupiterOne account.
+- Monitor changes to LastPass users using JupiterOne alerts.
 - Monitor users' LastPass Master Password Strength, users' security score,
   users' usage and users' date of last password change.
 
 ## How it Works
 
-- JupiterOne periodically fetches `users` from {{provider}} to update the graph.
+- JupiterOne periodically fetches `users` from LastPass to update the graph.
 - Write JupiterOne queries to review and monitor updates to the graph, or
   leverage existing queries.
 - Configure alerts to take action when JupiterOne graph changes, or leverage
@@ -29,7 +29,7 @@ If you need help with this integration, please contact
 
 ## Integration Walkthrough
 
-### In {{provider}}
+### In LastPass
 
 1. Locate your Company ID. After logging into
    [admin.lastpass.com](https://admin.lastpass.com), head to the Dashboard tab.
@@ -42,10 +42,10 @@ If you need help with this integration, please contact
 ### In JupiterOne
 
 1. From the top navigation of the J1 Search homepage, select **Integrations**.
-2. Scroll to the **{{provider}}** integration tile and click it.
+2. Scroll to the **LastPass** integration tile and click it.
 3. Click the **Add Configuration** button and configure the following settings:
 
-- Enter the **Account Name** by which you'd like to identify this {{provider}}
+- Enter the **Account Name** by which you'd like to identify this LastPass
   account in JupiterOne. Ingested entities will have this value stored in
   `tag.AccountName` when **Tag with Account Name** is checked.
 - Enter a **Description** that will further assist your team when identifying
@@ -60,7 +60,7 @@ If you need help with this integration, please contact
 # How to Uninstall
 
 1. From the top navigation of the J1 Search homepage, select **Integrations**.
-2. Scroll to the **{{provider}}** integration tile and click it.
+2. Scroll to the **LastPass** integration tile and click it.
 3. Identify and click the **integration to delete**.
 4. Click the **trash can** icon.
 5. Click the **Remove** button to delete the integration.
