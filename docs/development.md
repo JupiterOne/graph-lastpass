@@ -1,28 +1,29 @@
 # Development
 
-Add details here to give a brief overview of how to work with the provider APIs.
-Please reference any SDKs or API docs used to help build the integration here.
+LastPass provides API access for Enterprise users. Some documentation is
+provided
+[here](https://support.lastpass.com/help/use-the-lastpass-provisioning-api-lp010068).
+The Postman Collection is useful for discovering how requests should be built.
+You can find it
+[here](https://support.lastpass.com/help/use-the-lastpass-enterprise-api-postman-collection).
 
 ## Prerequisites
 
-Supply details about software or tooling (like maybe Docker or Terraform) that
-is needed for development here.
-
-Please supply references to documentation that details how to install those
-dependencies here.
-
-Tools like Node.js and NPM are already covered in the [README](../README.md) so
-don't bother documenting that here.
-
-## Provider account setup
-
-Please provide information about the steps needed to create an account with a
-provider. Images and references to a provider's documentation is very helpful
-for new developers picking up your work.
+In order to use the LastPass API, you will need to have admin access to an
+Enterprise account. You will also need a CompanyId (aka Account Number) and a
+Provisioning Hash.
 
 ## Authentication
 
-Supply details here for information on how to authenticate with a provider so
-that developers have an idea of what's needed to hit APIs. It may be useful to
-provide explanations for each value specified in the
-[`IntegrationInstanceConfigFieldMap`](../src/config.ts).
+Login at admin.lastpass.com. Next, locate your Company ID. Navigate to the
+Dashboard tab. Once there, the Company ID (sometimes labeled Account number) is
+displayed at the top of the page. Next,
+[navigate](https://lastpass.com/company/#!/settings/enterprise-api) to
+Advanced > Provisioning API. Generate a Provisioning Hash.
+
+Here is some 3rd party
+[docs](https://support.bettercloud.com/s/article/Integrating-LastPass-with-BetterCloud-bc45459?#)
+that may help.
+
+With a Company ID and Provisioning Hash, you can create a `.env` and add your
+values.
