@@ -15,6 +15,7 @@ describe('user converter', () => {
       disabled: false,
       admin: true,
       totalscore: '0',
+      multifactor: 'googleauth',
       duousername: null,
       sites: 0,
       notes: 0,
