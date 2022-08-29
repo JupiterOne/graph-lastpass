@@ -39,9 +39,9 @@ export function createUserEntity(user: User): Entity {
         webLink: `https://admin.lastpass.com/users/view?users=${searchParamForWebLink}`,
 
         duoUsername: user.duousername,
-        masterPasswordStrength: parseFloat(user.mpstrength) || 0,
+        masterPasswordStrength: (user.mpstrength && parseFloat(user.mpstrength)) || 0,
         passwordResetRequired: user.password_reset_required,
-        securityScore: parseFloat(user.totalscore) || 0,
+        securityScore: (user.totalscore && parseFloat(user.totalscore)) || 0,
         linkedAccount: user.linked,
         sitesCount: user.sites,
         notesCount: user.notes,
