@@ -1,6 +1,7 @@
 import {
   createIntegrationEntity,
   Entity,
+  parseStringPropertyValue,
   parseTimePropertyValue,
 } from '@jupiterone/integration-sdk-core';
 import { User } from '../../types';
@@ -32,6 +33,10 @@ export function createUserEntity(user: User): Entity {
         lastLogin: parseTimePropertyValue(user.last_login),
         email: user.username,
         active: !user.disabled,
+        ...(user.multifactor && {
+          mfaEnabled: true,
+        }),
+        mfaType: user.multifactor,
         neverLoggedIn: user.neverloggedin,
         admin: user.admin,
         shortLoginId,
@@ -39,9 +44,9 @@ export function createUserEntity(user: User): Entity {
         webLink: `https://admin.lastpass.com/users/view?users=${searchParamForWebLink}`,
 
         duoUsername: user.duousername,
-        masterPasswordStrength: user.mpstrength,
+        masterPasswordStrength: parseStringPropertyValue(user.mpstrength),
         passwordResetRequired: user.password_reset_required,
-        securityScore: user.totalscore,
+        securityScore: parseStringPropertyValue(user.totalscore),
         linkedAccount: user.linked,
         sitesCount: user.sites,
         notesCount: user.notes,

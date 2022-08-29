@@ -24,6 +24,7 @@ export interface User {
   duousername: string | null;
   disabled: boolean;
   totalscore: string | null;
+  multifactor: string;
   admin: boolean;
   linked?: string;
   sites: number;
