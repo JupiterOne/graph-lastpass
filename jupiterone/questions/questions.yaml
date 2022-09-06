@@ -1,15 +1,59 @@
 ---
-sourceId: managed:template
-integrationDefinitionId: '${integration_definition_id}'
-questions: []
-  # - id: integration-question-template-replace-me
-  #   title: What kinds of questions will this integration support?
-  #   description:
-  #     TODO Every integration should contribute questions! Please be carefule
-  #     to replace this before deploying the integration to JupiterOne.
-  #   queries:
-  #     - name: good
-  #       query: |
-  #         find * with _integrationDefinitionId = '${integration_definition_id}'
-  #   tags:
-  #     - template
+sourceId: managed:lastpass
+integrationDefinitionId: "${integration_definition_id}"
+questions:
+- id: integration-question-lastpass-master-password-strength
+  title: Are my users using strong master passwords for their LastPass account?
+  description:
+    Returns users using a weak master password in LastPass. Notify these users
+    to reset their password. Set a stronger password policy in LastPass seettings.
+  queries:
+  - name: Users with weak master password
+    resultsAre: BAD
+    query: |
+      FIND lastpass_user WITH masterPasswordStrength < 75
+  - name: Users by master password strength
+    resultsAre: INFORMATIVE
+    query: |
+      FIND lastpass_user
+      RETURN lastpass_user.displayName, lastpass_user.masterPasswordStrength
+      ORDER by lastpass_user.masterPasswordStrength ASC
+  tags:
+  - access
+  - iam
+- id: integration-question-lastpass-security-score
+  title: What are the security scores of my LastPass users?
+  description:
+    Returns the security scores of LastPass users. Work with users with low scores
+    to reset their weak/duplicate passwords.
+  queries:
+  - name: Users with weak security score
+    resultsAre: BAD
+    query: |
+      FIND lastpass_user WITH securityScore < 75
+  - name: Users by security score
+    resultsAre: INFORMATIVE
+    query: |
+      FIND lastpass_user
+      RETURN lastpass_user.displayName, lastpass_user.securityScore
+      ORDER by lastpass_user.securityScore ASC
+  tags:
+  - access
+  - iam
+- id: integration-question-lastpass-users-mfa
+  title: Is MFA enabled for my LastPass Users?
+  description:
+    List users with and without MFA enabled. Work with users to enable MFA 
+    as part of their user onboarding.
+  queries:
+  - name: MFA NOT Enabled
+    resultsAre: BAD
+    query: |
+      FIND lastpass_user with mfaEnabled!=true
+  - name: MFA Enabled
+    resultsAre: INFORMATIVE
+    query: |
+      FIND lastpass_user with mfaEnabled=true
+  tags:
+  - access
+  - iam
