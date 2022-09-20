@@ -66,7 +66,7 @@ questions:
     - name: Active Admin Users neverLoggedIn
       resultsAre: BAD
       query: |
-        FIND lastpass_user with (active = true AND admin = true AND masterPasswordStrength = "0" AND neverLoggedIn = true) 
+        FIND lastpass_user with (active = true AND admin = true AND masterPasswordStrength = 0 AND neverLoggedIn = true) 
     tags:
      - access
      - iam
