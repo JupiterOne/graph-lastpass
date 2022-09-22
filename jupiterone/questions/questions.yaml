@@ -57,13 +57,12 @@ questions:
   tags:
   - access
   - iam
-
   - id: integration-question-lastpass-active-admin-user-never-logged-in-with-zero-masterPasswordStrength
     title: Who are the LastPass active admin users that have never logged in with no masterPasswordStrength?
     description:
-      Returns a list of active admin LastPass users that have neverLoggedIn with no masterPasswordStrength.
+      Returns a list of active admin LastPass users that have never logged in with no masterPasswordStrength.
     queries:
-    - name: Active Admin Users neverLoggedIn
+    - name: Active Admin Users Never Logged In
       resultsAre: BAD
       query: |
         FIND lastpass_user with (active = true AND admin = true AND masterPasswordStrength = 0 AND neverLoggedIn = true) 
