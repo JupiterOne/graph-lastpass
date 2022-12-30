@@ -75,7 +75,7 @@ questions:
     Developers who contribute code (i.e. opens pull requests) are at higher risk 
     if they have a weak master password (<100) and are actively using LastPass (sitesCount > 0).
   queries:
-  - name: Developers with Weak Master Password
+  - name: Developers with weak master password
     resultsAre: BAD
     query: |
         Find unique PR
