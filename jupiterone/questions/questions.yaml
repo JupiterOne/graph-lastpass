@@ -78,12 +78,18 @@ questions:
   - name: Developers with weak master password
     resultsAre: BAD
     query: |
-        Find unique PR
-        that opened << User
-        that is Person
-        that is lastpass_user
-          with masterPasswordStrength < 100 and sitesCount > 0
-        return Person.displayName, Person.email, Person.managerEmail
+      FIND unique lastpass_user
+        WITH masterPasswordStrength < 100
+        AND sitesCount > 0
+      THAT is Person
+      THAT is User
+      THAT OPENED PR
+      RETURN 
+        Person.displayName, 
+        Person.email, 
+        Person.managerEmail,
+        lastpass_user.masterPasswordStrength,
+        lastpass_user.sitesCount
   tags:
   - access
   - iam
