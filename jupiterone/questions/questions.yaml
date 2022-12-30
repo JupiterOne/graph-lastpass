@@ -69,3 +69,22 @@ questions:
   tags:
   - access
   - iam
+- id: integration-question-lastpass-weak-password-developers
+  title: Are there developers who contribute code with a weak master password?
+  description:
+    Developers who contribute code (i.e. opens pull requests) are at higher risk 
+    if they have a weak master password (<100) and are actively using LastPass (sitesCount > 0).
+  queries:
+  - name: Developers with weak master password
+    resultsAre: BAD
+    query: |
+        Find unique PR
+        that opened << User
+        that is Person
+        that is lastpass_user
+          with masterPasswordStrength < 100 and sitesCount > 0
+        return Person.displayName, Person.email, Person.managerEmail
+  tags:
+  - access
+  - iam
+  - dev
