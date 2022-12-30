@@ -79,7 +79,7 @@ questions:
     resultsAre: BAD
     query: |
         Find unique PR
-        that opened << (bitbucket_user|github_user|gitlab_user)
+        that opened << User
         that is Person
         that is lastpass_user
           with masterPasswordStrength < 100 and sitesCount > 0
