@@ -82,7 +82,7 @@ questions:
         WITH masterPasswordStrength < 100
         AND sitesCount > 0
       THAT is Person
-      THAT is github_user
+      THAT is User
       THAT OPENED PR
       RETURN 
         Person.displayName, 
